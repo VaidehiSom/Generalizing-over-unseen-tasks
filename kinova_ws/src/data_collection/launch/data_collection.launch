@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="data_collection" type="data_collection" name="data_collection" output="screen" />
+
+</launch>
