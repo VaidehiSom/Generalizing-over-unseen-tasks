@@ -1,0 +1,26 @@
+<package format="2">
+  <name>behavior_cloning</name>
+  <version>1.2.4</version>
+  <description>
+    This package trains on data using behavior cloning
+  </description>
+  <maintainer email="som.vaidehi920@gmail.com">Vaidehi Som</maintainer>
+  <license>MIT</license>
+
+  <!-- <url></url> -->
+  <author>Vaidehi Som</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+
+  <build_depend>message_generation</build_depend>
+
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>rospy</exec_depend>
+
+  <!-- <test_depend>python-mock</test_depend> -->
+
+  <!-- <doc_depend>doxygen</doc_depend> -->
+</package>
