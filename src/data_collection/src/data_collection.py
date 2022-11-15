@@ -10,8 +10,8 @@ class DataCollection:
         # subscriber, publisher
         # TODO: subscribe- edd effector position, camera feed
         self.end_effector_pos_sub = rospy.Subscriber('/your_robot_name/joint_state', JointState, self.end_effector_pos_cb)
-        self.camera_feed_color_sub = rospy.Subscriber('/camera/color/image_raw', Image, self.camera_feed_cb)
-        self.camera_feed_depth_sub = rospy.Subscriber('/camera/depth/image_raw', Image, self.camera_feed_cb)
+        self.camera_feed_color_sub = rospy.Subscriber('/camera/color/image_raw', Image, self.camera_color_feed_cb)
+        self.camera_feed_depth_sub = rospy.Subscriber('/camera/depth/image_raw', Image, self.camera_depth_feed_cb)
         self.file = open("data_collection.txt", "a")
         self.bag = rosbag.Bag("data_collection.bag", 'a')
         print("DataCollection")
@@ -24,8 +24,11 @@ class DataCollection:
     def end_effector_pos_cb(self, data):
         self.end_effector_pos = data
     
-    def camera_feed_cb(self, data):
-        self.camera_feed = data
+    def camera_depth_feed_cb(self, data):
+        self.camera_depth_feed = data
+
+    def camera_color_feed_cb(self, data):
+        self.camera_color_feed = data
 
     def record_data(self):
         self.bag.write('/your_robot_name/joint_state', self.end_effector_pos)
