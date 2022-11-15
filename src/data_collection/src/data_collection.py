@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from std_msgs.msg import String # TODO: Check data type of subscribers/publishers and import here
+from sensor_msgs.msg import Image # TODO: Check data type of subscribers/publishers and import here
 from sensor_msgs.msg import JointState
 import rosbag
 
@@ -9,8 +9,9 @@ class DataCollection:
     def __init__(self):
         # subscriber, publisher
         # TODO: subscribe- edd effector position, camera feed
-        self.end_effector_pos_subsciber = rospy.Subscriber('/your_robot_name/joint_state', JointState, self.end_effector_pos_cb)
-        self.camera_feed_subscriber = rospy.Subscriber('', String, self.camera_feed_cb)
+        self.end_effector_pos_sub = rospy.Subscriber('/your_robot_name/joint_state', JointState, self.end_effector_pos_cb)
+        self.camera_feed_color_sub = rospy.Subscriber('/camera/color/image_raw', Image, self.camera_feed_cb)
+        self.camera_feed_depth_sub = rospy.Subscriber('/camera/depth/image_raw', Image, self.camera_feed_cb)
         self.file = open("data_collection.txt", "a")
         self.bag = rosbag.Bag("data_collection.bag", 'a')
         print("DataCollection")
