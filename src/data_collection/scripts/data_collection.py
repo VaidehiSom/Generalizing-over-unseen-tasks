@@ -83,7 +83,7 @@ if __name__ == '__main__':
 
     for i in range(int(a)):
         now = rospy.get_rostime()
-        b = input("Start round %f?", i)
+        b = input("Start round?")
         if(b=='Y' or b=='y'):
             while(rospy.Time.now() != now + rospy.Duration(timer_for_one_round_mins*60)):
                 data_c.record_data()
