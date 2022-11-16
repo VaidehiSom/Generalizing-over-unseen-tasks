@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <launch>
-  <node pkg="data_collection" type="data_collection" name="data_collection" output="screen" />
+  <node pkg="data_collection" type="data_collection.py" name="data_collection" output="screen" />
+  <!-- <include file="$(find meam520_labs)/launch/single.launch"> -->
 
 </launch>

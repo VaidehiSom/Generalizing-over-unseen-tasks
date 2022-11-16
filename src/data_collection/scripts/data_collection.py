@@ -3,7 +3,8 @@
 import rospy
 from sensor_msgs.msg import Image # TODO: Check data type of subscribers/publishers and import here
 from sensor_msgs.msg import JointState
-import rosbag
+# import rosbag
+import csv
 
 class DataCollection:
     def __init__(self):
@@ -12,13 +13,15 @@ class DataCollection:
         self.joint_states_sub = rospy.Subscriber('/my_gen3/joint_states', JointState, self.joint_states_cb)
         self.camera_feed_color_sub = rospy.Subscriber('/camera/color/image_raw', Image, self.camera_color_feed_cb)
         self.camera_feed_depth_sub = rospy.Subscriber('/camera/depth/image_raw', Image, self.camera_depth_feed_cb)
-        self.file = open("data_collection.txt", "a")
-        self.bag = rosbag.Bag("data_collection.bag", 'a')
+        # self.file = open("data_collection.txt", "a")
+        # self.bag = rosbag.Bag("data_collection.bag", 'a')
+        self.f = open("/home/vaidehi/Downloads/Kinova_RoboticArm/src/data_collection/data_collection.csv", 'w')
+        self.writer = csv.writer(self.f)
         print("DataCollection")
 
     def __del__(self):
-        self.file.close()
-        self.bag.close()
+        # self.file.close()
+        self.f.close()
         print("~DataCollection")
 
     def joint_states_cb(self, data):
@@ -43,8 +46,9 @@ class DataCollection:
         self.camera_color_feed = data
 
     def record_data(self):
-        self.bag.write('/my_gen3/joint_states', self.end_effector_pos)
-        self.bag.write('', self.camera_feed)
+        self.writer.writerow(self.end_effector_pos)
+        # self.bag.write('/my_gen3/joint_states', self.end_effector_pos)
+        # self.bag.write('', self.camera_feed)
 
 
 
@@ -55,17 +59,17 @@ if __name__ == '__main__':
     timer_for_one_round_mins = 1 # 1 min
     a = input("How many rounds?")
 
-    for i in range(a):
+    for i in range(int(a)):
         now = rospy.get_rostime()
         while(rospy.Time.now() != now + rospy.Duration(timer_for_one_round_mins*60)):
             data_c.record_data()
             rospy.sleep(0.01)
         
-        ans = input("Save this data?")
-        if(ans=="y" or ans=="Y"):
-            with rosbag.Bag('final_data.bag', 'w') as outbag:
-                for topic, msg, t in rosbag.Bag('data_collection.bag').read_messages():
-                    outbag.write(topic, msg, t)
+        # ans = input("Save this data?")
+        # if(ans=="y" or ans=="Y"):
+        #     with rosbag.Bag('final_data.bag', 'w') as outbag:
+        #         for topic, msg, t in rosbag.Bag('data_collection.bag').read_messages():
+        #             outbag.write(topic, msg, t)
         rospy.sleep(0.1)
 
     rospy.spin()
