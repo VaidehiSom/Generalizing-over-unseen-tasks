@@ -9,7 +9,7 @@ class DataCollection:
     def __init__(self):
         # subscriber, publisher
         # TODO: subscribe- edd effector position, camera feed
-        self.end_effector_pos_sub = rospy.Subscriber('/your_robot_name/joint_state', JointState, self.end_effector_pos_cb)
+        self.joint_states_sub = rospy.Subscriber('/my_gen3/joint_states', JointState, self.joint_states_cb)
         self.camera_feed_color_sub = rospy.Subscriber('/camera/color/image_raw', Image, self.camera_color_feed_cb)
         self.camera_feed_depth_sub = rospy.Subscriber('/camera/depth/image_raw', Image, self.camera_depth_feed_cb)
         self.file = open("data_collection.txt", "a")
@@ -21,7 +21,19 @@ class DataCollection:
         self.bag.close()
         print("~DataCollection")
 
-    def end_effector_pos_cb(self, data):
+    def joint_states_cb(self, data):
+        """header: 
+            seq: 1774
+            stamp: 
+                secs: 1668551773
+                nsecs: 509788036
+            frame_id: ''
+          name: [joint_1, joint_2, joint_3, joint_4, joint_5, joint_6, joint_7, finger_joint, left_inner_knuckle_joint,
+          left_inner_finger_joint, right_outer_knuckle_joint, right_inner_knuckle_joint, right_inner_finger_joint]
+          position: [-0.005732187930286514, 0.4887219180940803, -3.132436439445992, -1.864200246198343, 0.0024580001582711858, 0.7828533132387959, 1.5643789075161325, 0.00698692093770088, 0.00698692093770088, -0.00698692093770088, 0.00698692093770088, 0.00698692093770088, -0.00698692093770088]
+          velocity: [-0.002289906319662698, 0.17106830242405116, 0.010021302492616237, 0.3409748008225553, 0.0042357197429195486, -0.1534153726908928, -0.00755036961837568, 0.0, 0.0, -0.0, 0.0, 0.0, -0.0]
+          effort: [-0.31865596771240234, 17.228782653808594, 0.03316592797636986, -10.732674598693848, -0.0162641778588295, -2.255537509918213, -0.31152278184890747, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        """
         self.end_effector_pos = data
     
     def camera_depth_feed_cb(self, data):
@@ -31,7 +43,7 @@ class DataCollection:
         self.camera_color_feed = data
 
     def record_data(self):
-        self.bag.write('/your_robot_name/joint_state', self.end_effector_pos)
+        self.bag.write('/my_gen3/joint_states', self.end_effector_pos)
         self.bag.write('', self.camera_feed)
 
 
